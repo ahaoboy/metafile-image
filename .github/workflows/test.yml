@@ -1,0 +1,54 @@
+name: Test
+
+permissions:
+  contents: write
+
+on: [push]
+
+env:
+  CARGO_TERM_COLOR: always
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+defaults:
+  run:
+    shell: bash --noprofile --norc -CeEuo pipefail {0}
+
+jobs:
+  rust-test:
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-apple-darwin
+            os: macos-13
+          - target: aarch64-apple-darwin
+            os: macos-14
+          - target: x86_64-pc-windows-gnu
+            os: windows-latest
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+      - name: install easy-install
+        uses: ahaoboy/easy-setup@v1
+        with:
+          url: |-
+            https://github.com/ahaoboy/wiztree-metafile
+            https://github.com/pnpm/pnpm
+      - name: build
+        run: |
+          pnpm install
+          pnpm run build
+
+      - name: wiztree-metafile
+        run: |
+          wiztree-metafile . > wiztree-metafile-${{ matrix.os }}.json
+          node cjs/cli.js wiztree-metafile-${{ matrix.os }}.json wiztree-metafile-${{ matrix.os }}.png
+          node cjs/cli.js wiztree-metafile-${{ matrix.os }}.json wiztree-metafile-${{ matrix.os }}.webp
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: bloaty-metafile-${{ matrix.os }}
+          path: |
+            wiztree-metafile*

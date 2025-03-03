@@ -1,0 +1,53 @@
+{
+  "name": "metafile-image",
+  "version": "0.1.0",
+  "description": "metafile-image",
+  "types": "esm/index.d.ts",
+  "main": "esm/index.js",
+  "bin": {
+    "metafile-image": "cjs/cli.js"
+  },
+  "files": [
+    "esm",
+    "cjs",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahaoboy/metafile-image.git"
+  },
+  "homepage": "https://github.com/ahaoboy/metafile-image#README",
+  "keywords": [
+    "metafile-image"
+  ],
+  "author": "ahaoboy",
+  "license": "ISC",
+  "scripts": {
+    "build:cjs": "tsc --outDir cjs --declaration false --module commonjs",
+    "build:esm": "tsc --outDir esm --module esnext",
+    "build": "npm run build:cjs && npm run build:esm",
+    "dev": "tsc -w -p tsconfig.build.json",
+    "bundle": "esbuild --outdir=bundle --bundle --minify --platform=node --format=cjs ts/cli.ts",
+    "format": "deno fmt --ignore=node_modules,dist,bundle,target --indent-width=2 --no-semicolons --single-quote",
+    "pre-check": "npm run clippy && npm run format",
+    "clippy": "cargo clippy --fix --allow-dirty --allow-staged",
+    "clear": "rm -rf node_modules dist bundle",
+    "bump": "pnpm up --latest --force",
+    "release": "pnpm publish -r --access public",
+    "release-alpha": "pnpm publish -r --access public --tag alpha"
+  },
+  "dependencies": {
+    "@types/yargs": "^17.0.33",
+    "puppeteer": "^24.3.0",
+    "puppeteer-core": "^24.3.0",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "esbuild": "0.25.0",
+    "typescript": "^5.7.3"
+  },
+  "pnpm": {
+    "neverBuiltDependencies": []
+  }
+}
