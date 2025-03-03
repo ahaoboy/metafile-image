@@ -40,12 +40,11 @@ jobs:
         run: |
           pnpm install
           pnpm run build
-
       - name: wiztree-metafile
         run: |
           wiztree-metafile . > wiztree-metafile-${{ matrix.os }}.json
-          node cjs/cli.js wiztree-metafile-${{ matrix.os }}.json wiztree-metafile-${{ matrix.os }}.png
-          node cjs/cli.js wiztree-metafile-${{ matrix.os }}.json wiztree-metafile-${{ matrix.os }}.webp
+          node cli/cli.js wiztree-metafile-${{ matrix.os }}.json wiztree-metafile-${{ matrix.os }}.png
+          node cli/cli.js wiztree-metafile-${{ matrix.os }}.json wiztree-metafile-${{ matrix.os }}.webp
       - name: Upload
         uses: actions/upload-artifact@v4
         with:

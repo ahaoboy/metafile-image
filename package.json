@@ -5,9 +5,10 @@
   "types": "esm/index.d.ts",
   "main": "esm/index.js",
   "bin": {
-    "metafile-image": "cjs/cli.js"
+    "metafile-image": "cli/cli.js"
   },
   "files": [
+    "cli",
     "esm",
     "cjs",
     "README.md"
@@ -27,14 +28,10 @@
     "build:esm": "tsc --outDir esm --module esnext",
     "build": "npm run build:cjs && npm run build:esm",
     "dev": "tsc -w -p tsconfig.build.json",
-    "bundle": "esbuild --outdir=bundle --bundle --minify --platform=node --format=cjs ts/cli.ts",
-    "format": "deno fmt --ignore=node_modules,dist,bundle,target --indent-width=2 --no-semicolons --single-quote",
-    "pre-check": "npm run clippy && npm run format",
-    "clippy": "cargo clippy --fix --allow-dirty --allow-staged",
+    "format": "deno fmt --ignore=node_modules,dist,bundle,target --indent-width=2 --no-semicolons",
     "clear": "rm -rf node_modules dist bundle",
     "bump": "pnpm up --latest --force",
-    "release": "pnpm publish -r --access public",
-    "release-alpha": "pnpm publish -r --access public --tag alpha"
+    "release": "pnpm publish -r --access public"
   },
   "dependencies": {
     "@types/yargs": "^17.0.33",
