@@ -4,6 +4,7 @@ import { readFileSync } from "fs"
 export async function metafileImage(
   metafilePath: string,
   imagePath: string,
+  mode: undefined | string,
   width = 3840,
   height = 2160,
   quality = 100,
@@ -34,6 +35,14 @@ export async function metafileImage(
     if (!paste) {
       return false
     }
+
+    if (mode) {
+      await page.emulateMediaFeatures([
+        { name: 'prefers-color-scheme', value: mode }
+      ])
+    }
+
+
     await page.waitForNetworkIdle()
     await page.waitForSelector("canvas", { timeout: 10000 })
     const chart = await page.$("canvas")

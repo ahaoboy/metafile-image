@@ -14,6 +14,10 @@ const args = yargs(hideBin(process.argv))
     description: "viewport height",
     type: "number",
     default: 2160,
+  }).option("mode", {
+    alias: "m",
+    description: "mode",
+    type: "string",
   })
   .option("quality", {
     alias: "q",
@@ -33,11 +37,11 @@ const args = yargs(hideBin(process.argv))
   })
   .parseSync()
 
-const { width, height, quality } = args
+const { width, height, quality ,mode} = args
 const [metafile, image] = args._ as string[]
 if (!metafile || !image) {
   console.log("metafile-image <metafile.json> <image.png>")
   process.exit()
 }
 
-metafileImage(metafile, image, width, height, quality)
+metafileImage(metafile, image, mode, width, height, quality)

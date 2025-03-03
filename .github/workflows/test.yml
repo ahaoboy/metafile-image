@@ -43,11 +43,13 @@ jobs:
       - name: wiztree-metafile
         run: |
           wiztree-metafile . > wiztree-metafile-${{ matrix.os }}.json
-          node cli/cli.js wiztree-metafile-${{ matrix.os }}.json wiztree-metafile-${{ matrix.os }}.png
-          node cli/cli.js wiztree-metafile-${{ matrix.os }}.json wiztree-metafile-${{ matrix.os }}.webp
+          node cli/cli.js -m dark wiztree-metafile-${{ matrix.os }}.json wiztree-metafile-${{ matrix.os }}.dark.png
+          node cli/cli.js -m dark wiztree-metafile-${{ matrix.os }}.json wiztree-metafile-${{ matrix.os }}.dark.webp
+          node cli/cli.js -m light wiztree-metafile-${{ matrix.os }}.json wiztree-metafile-${{ matrix.os }}.light.png
+          node cli/cli.js -m light wiztree-metafile-${{ matrix.os }}.json wiztree-metafile-${{ matrix.os }}.light.webp
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: bloaty-metafile-${{ matrix.os }}
+          name: wiztree-metafile-${{ matrix.os }}
           path: |
             wiztree-metafile*

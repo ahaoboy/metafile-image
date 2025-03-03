@@ -5,4 +5,7 @@ Cli tool: convert metafile.json to image through
 pnpm i metafile-image -g
 
 metafile-image meta.json meta.png
+
+metafile-image meta.json meta.webp -w 1920 -h 1080 -q 100 --mode=dark
+
 ```
