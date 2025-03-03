@@ -1,0 +1,74 @@
+{
+  "inputs": {
+    ".github": {
+      "bytes": 3404,
+      "imports": [
+        { "path": ".github/workflows/test.yml" },
+        { "path": ".github/workflows" }
+      ]
+    },
+    ".github/workflows/test.yml": { "bytes": 1702, "imports": [] },
+    "README.md": { "bytes": 246, "imports": [] },
+    "package.json": { "bytes": 1303, "imports": [] },
+    "metafile-image": {
+      "bytes": 9037,
+      "imports": [
+        { "path": ".github" },
+        { "path": ".gitignore" },
+        { "path": ".npmrc" },
+        { "path": "a.json" },
+        { "path": "cli" },
+        { "path": "package.json" },
+        { "path": "README.md" },
+        { "path": "src" },
+        { "path": "tsconfig.json" }
+      ]
+    },
+    "a.json": { "bytes": 0, "imports": [] },
+    ".github/workflows": {
+      "bytes": 1702,
+      "imports": [{ "path": ".github/workflows/test.yml" }]
+    },
+    "tsconfig.json": { "bytes": 648, "imports": [] },
+    "src/tool.ts": { "bytes": 1962, "imports": [] },
+    "cli/cli.js": { "bytes": 24, "imports": [] },
+    "src": {
+      "bytes": 3055,
+      "imports": [
+        { "path": "src/tool.ts" },
+        { "path": "src/index.ts" },
+        { "path": "src/cli.ts" }
+      ]
+    },
+    ".npmrc": { "bytes": 39, "imports": [] },
+    "cli": { "bytes": 24, "imports": [{ "path": "cli/cli.js" }] },
+    "src/index.ts": { "bytes": 23, "imports": [] },
+    "src/cli.ts": { "bytes": 1070, "imports": [] },
+    ".gitignore": { "bytes": 318, "imports": [] }
+  },
+  "outputs": {
+    "metafile-image": {
+      "bytes": 9037,
+      "inputs": {
+        "src/index.ts": { "bytesInOutput": 23 },
+        "README.md": { "bytesInOutput": 246 },
+        "src": { "bytesInOutput": 3055 },
+        "tsconfig.json": { "bytesInOutput": 648 },
+        "src/cli.ts": { "bytesInOutput": 1070 },
+        ".github/workflows": { "bytesInOutput": 1702 },
+        "cli/cli.js": { "bytesInOutput": 24 },
+        ".github": { "bytesInOutput": 3404 },
+        "a.json": { "bytesInOutput": 0 },
+        ".gitignore": { "bytesInOutput": 318 },
+        "src/tool.ts": { "bytesInOutput": 1962 },
+        ".github/workflows/test.yml": { "bytesInOutput": 1702 },
+        ".npmrc": { "bytesInOutput": 39 },
+        "package.json": { "bytesInOutput": 1303 },
+        "cli": { "bytesInOutput": 24 }
+      },
+      "imports": [],
+      "exports": [],
+      "entryPoint": "metafile-image"
+    }
+  }
+}
