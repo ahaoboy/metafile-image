@@ -18,7 +18,7 @@ const DefaultOptions: Options = {
   quality: 100,
   type: "treemap",
   // 5min
-  timeout: 1000 * 60 * 5
+  timeout: 1000 * 60 * 5,
 }
 
 async function waitIdle(page: Page) {
@@ -31,8 +31,6 @@ async function waitIdle(page: Page) {
   })
 }
 
-
-
 export async function metafileImage(
   metafilePath: string,
   imagePath: string,
@@ -44,7 +42,7 @@ export async function metafileImage(
     mode,
     quality,
     type,
-    timeout
+    timeout,
   } = {
     ...DefaultOptions,
     ...options,
@@ -67,9 +65,9 @@ export async function metafileImage(
 
     const [fileChooser] = await Promise.all([
       page.waitForFileChooser(),
-      page.click('#importButton'),
-    ]);
-    await fileChooser.accept([metafilePath]);
+      page.click("#importButton"),
+    ])
+    await fileChooser.accept([metafilePath])
 
     await page.waitForNetworkIdle()
     await page.waitForSelector("canvas", { timeout })
@@ -90,7 +88,7 @@ export async function metafileImage(
       imagePath.toLowerCase().endsWith(i)
     )
 
-    const charId = type === 'sunburst' ? 'main' : 'canvas';
+    const charId = type === "sunburst" ? "main" : "canvas"
     const chart = await page.$(charId)
     if (!chart) {
       return false

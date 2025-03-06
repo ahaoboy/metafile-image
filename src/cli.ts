@@ -54,4 +54,4 @@ if (!metafile || !image) {
   process.exit()
 }
 
-metafileImage(metafile, image, { mode, width, height, quality, type,timeout })
+metafileImage(metafile, image, { mode, width, height, quality, type, timeout })
