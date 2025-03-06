@@ -7,14 +7,18 @@ export type Options = {
   width: number
   height: number
   quality: number
+  timeout: number
   type: Type | (string & {})
 }
+
 const DefaultOptions: Options = {
   mode: "",
   width: 3840,
   height: 2160,
   quality: 100,
   type: "treemap",
+  // 5min
+  timeout: 1000 * 60 * 5
 }
 
 async function waitIdle(page: Page) {
@@ -27,6 +31,8 @@ async function waitIdle(page: Page) {
   })
 }
 
+
+
 export async function metafileImage(
   metafilePath: string,
   imagePath: string,
@@ -38,16 +44,15 @@ export async function metafileImage(
     mode,
     quality,
     type,
+    timeout
   } = {
     ...DefaultOptions,
     ...options,
   }
   try {
-    const metafileContent = readFileSync(metafilePath, "utf8")
     const browser = await puppeteer.launch({
       headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      timeout: 100_000
     })
     const page = await browser.newPage()
     await page.setViewport({ width, height })
@@ -60,26 +65,14 @@ export async function metafileImage(
       ])
     }
 
-    const paste = await page.evaluate((text) => {
-      const pasteEvent = new ClipboardEvent("paste", {
-        clipboardData: new DataTransfer(),
-        bubbles: true,
-        cancelable: true,
-      })
-      if (!pasteEvent.clipboardData) {
-        return false
-      }
-      pasteEvent.clipboardData.setData("text/plain", text)
-      document.body.dispatchEvent(pasteEvent)
-      return true
-    }, metafileContent)
-
-    if (!paste) {
-      return false
-    }
+    const [fileChooser] = await Promise.all([
+      page.waitForFileChooser(),
+      page.click('#importButton'),
+    ]);
+    await fileChooser.accept([metafilePath]);
 
     await page.waitForNetworkIdle()
-    await page.waitForSelector("canvas", { timeout: 10000 })
+    await page.waitForSelector("canvas", { timeout })
 
     waitIdle(page)
     const IdMap: Record<string, string> = {

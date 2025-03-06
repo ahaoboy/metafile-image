@@ -30,6 +30,11 @@ const args = yargs(hideBin(process.argv))
     description: "type(treemap | sunburst | flame)",
     type: "string",
   })
+  .option("timeout", {
+    description: "timeout(5min=1000 * 60 * 5)",
+    type: "number",
+    default: 1000 * 60 * 5,
+  })
   .positional("metafile", {
     description: "metafile path",
     type: "string",
@@ -42,11 +47,11 @@ const args = yargs(hideBin(process.argv))
   })
   .parseSync()
 
-const { width, height, quality, mode, type } = args
+const { width, height, quality, mode, type, timeout } = args
 const [metafile, image] = args._ as string[]
 if (!metafile || !image) {
   console.log("metafile-image <metafile.json> <image.png>")
   process.exit()
 }
 
-metafileImage(metafile, image, { mode, width, height, quality, type })
+metafileImage(metafile, image, { mode, width, height, quality, type,timeout })
