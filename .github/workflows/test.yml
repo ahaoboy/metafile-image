@@ -34,8 +34,12 @@ jobs:
         uses: ahaoboy/easy-setup@v1
         with:
           url: |-
+            https://github.com/denoland/deno
+            https://github.com/ahaoboy/bloaty-metafile
+            https://github.com/ahaoboy/bloaty-build
             https://github.com/ahaoboy/wiztree-metafile
             https://github.com/pnpm/pnpm
+
       - name: build
         run: |
           pnpm install
@@ -59,9 +63,21 @@ jobs:
               done
             done
           done
+
+      - name: deno
+        run: |
+          curl -L -o deno.lock  https://github.com/denoland/deno/raw/refs/heads/main/Cargo.lock
+          # 100mb
+          bloaty "$(which deno)" -d sections,symbols -n 0 --csv > deno-skip-${{ matrix.os }}.csv
+          # 400mb
+          bloaty-metafile deno-skip-${{ matrix.os }}.csv --name=deno --lock=deno.lock > deno-skip-${{ matrix.os }}.json
+          ls -lh
+          node cli/cli.js deno-skip-${{ matrix.os }}.json deno-${{ matrix.os }}.png
+
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: wiztree-metafile-${{ matrix.os }}
           path: |
             wiztree-metafile*
+            deno-${{ matrix.os }}*
