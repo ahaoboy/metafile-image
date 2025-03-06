@@ -65,6 +65,7 @@ jobs:
           done
 
       - name: deno
+        if: "!startsWith(matrix.os, 'windows')"
         run: |
           curl -L -o deno.lock  https://github.com/denoland/deno/raw/refs/heads/main/Cargo.lock
           # 100mb
