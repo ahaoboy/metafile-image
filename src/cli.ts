@@ -35,6 +35,11 @@ const args = yargs(hideBin(process.argv))
     type: "number",
     default: 1000 * 60 * 5,
   })
+  .option("url", {
+    description: "esbuild analyze url",
+    type: "string",
+    default: "https://esbuild.github.io/analyze/",
+  })
   .positional("metafile", {
     description: "metafile path",
     type: "string",
@@ -47,11 +52,19 @@ const args = yargs(hideBin(process.argv))
   })
   .parseSync()
 
-const { width, height, quality, mode, type, timeout } = args
+const { width, height, quality, mode, type, timeout, url } = args
 const [metafile, image] = args._ as string[]
 if (!metafile || !image) {
   console.log("metafile-image <metafile.json> <image.png>")
   process.exit()
 }
 
-metafileImage(metafile, image, { mode, width, height, quality, type, timeout })
+metafileImage(metafile, image, {
+  mode,
+  width,
+  height,
+  quality,
+  type,
+  timeout,
+  url,
+})

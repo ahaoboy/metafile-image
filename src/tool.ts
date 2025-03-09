@@ -9,6 +9,7 @@ export type Options = {
   quality: number
   timeout: number
   type: Type | (string & {})
+  url: string
 }
 
 const DefaultOptions: Options = {
@@ -19,6 +20,7 @@ const DefaultOptions: Options = {
   type: "treemap",
   // 5min
   timeout: 1000 * 60 * 5,
+  url: "https://esbuild.github.io/analyze/",
 }
 
 async function waitIdle(page: Page) {
@@ -55,7 +57,7 @@ export async function metafileImage(
     const page = await browser.newPage()
     await page.setViewport({ width, height })
     const url = `https://esbuild.github.io/analyze`
-    await page.goto(url, { waitUntil: "networkidle2" })
+    await page.goto(url, { waitUntil: "networkidle2", timeout })
 
     if (mode) {
       await page.emulateMediaFeatures([
