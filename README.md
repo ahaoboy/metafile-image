@@ -30,6 +30,15 @@ Determines whether the browser operates in light or dark mode.
 Defines the image quality when exporting. The value ranges from `0` (lowest
 quality) to `100` (highest quality).
 
+### url
+
+**Values:** string
+
+**Default:** `https://esbuild.github.io/analyze/`
+
+Customize esbuild analyze url
+
+
 ### type
 
 **Default:** `"treemap"` **Values:** `treemap` | `sunburst` | `flame`
