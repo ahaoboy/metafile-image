@@ -38,7 +38,6 @@ quality) to `100` (highest quality).
 
 Customize esbuild analyze url
 
-
 ### type
 
 **Default:** `"treemap"` **Values:** `treemap` | `sunburst` | `flame`
