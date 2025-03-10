@@ -1,5 +1,5 @@
 import puppeteer, { Page } from "puppeteer"
-import { readFileSync } from "fs"
+import { existsSync } from "fs"
 
 export type Type = "treemap" | "sunburst" | "flame"
 export type Options = {
@@ -45,11 +45,17 @@ export async function metafileImage(
     quality,
     type,
     timeout,
-    url
+    url,
   } = {
     ...DefaultOptions,
     ...options,
   }
+
+  if (!existsSync(metafilePath)) {
+    console.error("file not found: " + metafilePath)
+    return false
+  }
+
   try {
     const browser = await puppeteer.launch({
       headless: true,
@@ -102,9 +108,7 @@ export async function metafileImage(
         fullPage: false,
       }),
     )
-    await Promise.all([
-      browser.close(),
-    ])
+    await browser.close()
     return buffer
   } catch (e) {
     console.error(e)
