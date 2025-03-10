@@ -45,6 +45,7 @@ export async function metafileImage(
     quality,
     type,
     timeout,
+    url
   } = {
     ...DefaultOptions,
     ...options,
@@ -56,7 +57,6 @@ export async function metafileImage(
     })
     const page = await browser.newPage()
     await page.setViewport({ width, height })
-    const url = `https://esbuild.github.io/analyze`
     await page.goto(url, { waitUntil: "networkidle2", timeout })
 
     if (mode) {
@@ -107,7 +107,7 @@ export async function metafileImage(
     ])
     return buffer
   } catch (e) {
-    console.log(e)
+    console.error(e)
     return false
   }
 }
