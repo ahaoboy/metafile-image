@@ -38,12 +38,13 @@ jobs:
             https://github.com/ahaoboy/bloaty-metafile
             https://github.com/ahaoboy/bloaty-build
             https://github.com/ahaoboy/wiztree-metafile
-            https://github.com/pnpm/pnpm
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
       - name: build
         run: |
-          pnpm install
-          pnpm run build
+          bun install
+          bun run build
       - name: wiztree-metafile
         run: |
           wiztree-metafile . > wiztree-metafile-${{ matrix.os }}.json

@@ -1,8 +1,10 @@
-Cli tool: convert metafile.json to image through
+Cli tool: convert metafile.json ([wiztree-metafile](https://github.com/ahaoboy/wiztree-metafile)) to image through
 [puppeteer](https://github.com/puppeteer/puppeteer)
 
 ```bash
 pnpm i metafile-image -g
+
+wiztree-metafile . > meta.json
 
 metafile-image meta.json meta.png
 
