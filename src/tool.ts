@@ -117,10 +117,6 @@ export async function metafileImage(
       )
       await browser.close()
       return buffer
-    } else {
-      browser.on("disconnected", () => {
-        process.exit(0)
-      })
     }
   } catch (e) {
     console.error(e)
