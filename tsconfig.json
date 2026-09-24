@@ -1,11 +1,16 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
+    "rootDir": "./src",
+    "outDir": "dist",
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["ESNext", "ES2022", "es2021", "DOM"],
+    "lib": [
+      "ESNext",
+      "ES2022",
+      "es2021",
+      "DOM"
+    ],
     "allowJs": true,
-    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,12 +19,13 @@
     "skipLibCheck": true,
     "noEmit": false,
     "noEmitOnError": false,
-    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "declaration": true,
     "declarationMap": false,
     "sourceMap": false
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

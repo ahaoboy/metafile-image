@@ -10,6 +10,7 @@ export type Options = {
   timeout: number
   type: Type | (string & {})
   url: string
+  ui: boolean
 }
 
 const DefaultOptions: Options = {
@@ -21,6 +22,7 @@ const DefaultOptions: Options = {
   // 5min
   timeout: 1000 * 60 * 5,
   url: "https://esbuild.github.io/analyze/",
+  ui: false
 }
 
 async function waitIdle(page: Page) {
@@ -46,6 +48,7 @@ export async function metafileImage(
     type,
     timeout,
     url,
+    ui
   } = {
     ...DefaultOptions,
     ...options,
@@ -55,14 +58,30 @@ export async function metafileImage(
     console.error("file not found: " + metafilePath)
     return false
   }
-
+  const headless = !ui
   try {
     const browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      headless,
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--start-maximized",
+      ],
+    })
+    browser.on("disconnected", () => {
+      process.exit(0)
     })
     const page = await browser.newPage()
-    await page.setViewport({ width, height })
+    if (headless) {
+      await page.setViewport({ width, height })
+    } else {
+      await page.setViewport(null)
+      // const { width, height } = await page.evaluate(() => ({
+      //   width: window.screen.availWidth,
+      //   height: window.screen.availHeight,
+      // }))
+      // await page.setViewport({ width, height })
+    }
     await page.goto(url, { waitUntil: "networkidle2", timeout })
 
     if (mode) {
@@ -80,7 +99,7 @@ export async function metafileImage(
     await page.waitForNetworkIdle()
     await page.waitForSelector("canvas", { timeout })
 
-    waitIdle(page)
+    await waitIdle(page)
     const IdMap: Record<string, string> = {
       "treemap": "useTreemap",
       "sunburst": "useSunburst",
@@ -108,7 +127,9 @@ export async function metafileImage(
         fullPage: false,
       }),
     )
-    await browser.close()
+    if (!ui) {
+      await browser.close()
+    }
     return buffer
   } catch (e) {
     console.error(e)

@@ -1,4 +1,4 @@
-import * as yargs from "yargs"
+import yargs from "yargs"
 import { hideBin } from "yargs/helpers"
 import { metafileImage } from "./tool"
 
@@ -40,6 +40,12 @@ const args = yargs(hideBin(process.argv))
     type: "string",
     default: "https://esbuild.github.io/analyze/",
   })
+  .option("ui", {
+    alias: 'u',
+    description: "run with UI",
+    type: "boolean",
+    default: false,
+  })
   .positional("metafile", {
     description: "metafile path",
     type: "string",
@@ -52,7 +58,7 @@ const args = yargs(hideBin(process.argv))
   })
   .parseSync()
 
-const { width, height, quality, mode, type, timeout, url } = args
+const { width, height, quality, mode, type, timeout, url, ui } = args
 const [metafile, image] = args._ as string[]
 if (!metafile || !image) {
   console.log("metafile-image <metafile.json> <image.png>")
@@ -67,4 +73,5 @@ metafileImage(metafile, image, {
   type,
   timeout,
   url,
+  ui
 })

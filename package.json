@@ -34,17 +34,14 @@
     "release": "pnpm publish -r --access public"
   },
   "dependencies": {
-    "@types/yargs": "^17.0.33",
-    "puppeteer": "^24.3.0",
-    "puppeteer-core": "^24.3.0",
-    "yargs": "^17.7.2"
+    "@types/yargs": "^17.0.35",
+    "puppeteer": "^25.12.0",
+    "puppeteer-core": "^25.12.0",
+    "yargs": "^18.2.0"
   },
   "devDependencies": {
-    "@types/node": "^22.10.7",
-    "esbuild": "0.25.0",
-    "typescript": "^5.7.3"
-  },
-  "pnpm": {
-    "neverBuiltDependencies": []
+    "@types/node": "^26.6.2",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
   }
 }
