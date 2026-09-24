@@ -98,16 +98,15 @@ export async function metafileImage(
       await dom.click()
     }
     waitIdle(page)
-    const supportQuality = ![".png"].some((i) =>
-      imagePath.toLowerCase().endsWith(i)
-    )
-
     const charId = type === "sunburst" ? "main" : "canvas"
     const chart = await page.$(charId)
     if (!chart) {
       return false
     }
     if (headless) {
+      const supportQuality = ![".png"].some((i) =>
+        imagePath.toLowerCase().endsWith(i)
+      )
       const buffer = new Uint8Array(
         await chart.screenshot({
           quality: supportQuality ? quality : undefined,
