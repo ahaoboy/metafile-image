@@ -10,7 +10,7 @@ export type Options = {
   timeout: number
   type: Type | (string & {})
   url: string
-  ui: boolean
+  headless: boolean
 }
 
 const DefaultOptions: Options = {
@@ -22,7 +22,7 @@ const DefaultOptions: Options = {
   // 5min
   timeout: 1000 * 60 * 5,
   url: "https://esbuild.github.io/analyze/",
-  ui: false
+  headless: true
 }
 
 async function waitIdle(page: Page) {
@@ -48,7 +48,7 @@ export async function metafileImage(
     type,
     timeout,
     url,
-    ui
+    headless
   } = {
     ...DefaultOptions,
     ...options,
@@ -58,7 +58,6 @@ export async function metafileImage(
     console.error("file not found: " + metafilePath)
     return false
   }
-  const headless = !ui
   try {
     const browser = await puppeteer.launch({
       headless,
@@ -68,20 +67,8 @@ export async function metafileImage(
         "--start-maximized",
       ],
     })
-    browser.on("disconnected", () => {
-      process.exit(0)
-    })
     const page = await browser.newPage()
-    if (headless) {
-      await page.setViewport({ width, height })
-    } else {
-      await page.setViewport(null)
-      // const { width, height } = await page.evaluate(() => ({
-      //   width: window.screen.availWidth,
-      //   height: window.screen.availHeight,
-      // }))
-      // await page.setViewport({ width, height })
-    }
+    await page.setViewport(headless ? { width, height } : null)
     await page.goto(url, { waitUntil: "networkidle2", timeout })
 
     if (mode) {
@@ -120,19 +107,23 @@ export async function metafileImage(
     if (!chart) {
       return false
     }
-    const buffer = new Uint8Array(
-      await chart.screenshot({
-        quality: supportQuality ? quality : undefined,
-        path: imagePath,
-        fullPage: false,
-      }),
-    )
-    if (!ui) {
+    if (headless) {
+      const buffer = new Uint8Array(
+        await chart.screenshot({
+          quality: supportQuality ? quality : undefined,
+          path: imagePath,
+          fullPage: false,
+        }),
+      )
       await browser.close()
+      return buffer
+    } else {
+      browser.on("disconnected", () => {
+        process.exit(0)
+      })
     }
-    return buffer
   } catch (e) {
     console.error(e)
-    return false
   }
+  return false
 }

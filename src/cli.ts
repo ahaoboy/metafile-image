@@ -60,18 +60,21 @@ const args = yargs(hideBin(process.argv))
 
 const { width, height, quality, mode, type, timeout, url, ui } = args
 const [metafile, image] = args._ as string[]
-if (!metafile || !image) {
-  console.log("metafile-image <metafile.json> <image.png>")
-  process.exit()
+if (!metafile) {
+  console.log(`
+metafile-image <metafile.json> <image.png>
+metafile-image <metafile.json> --ui
+`.trim())
+} else {
+  metafileImage(metafile, image, {
+    mode,
+    width,
+    height,
+    quality,
+    type,
+    timeout,
+    url,
+    headless: !ui
+  })
 }
 
-metafileImage(metafile, image, {
-  mode,
-  width,
-  height,
-  quality,
-  type,
-  timeout,
-  url,
-  ui
-})
